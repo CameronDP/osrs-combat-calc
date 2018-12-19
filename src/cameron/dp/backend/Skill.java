@@ -203,6 +203,10 @@ public class Skill {
 		return this.exp;
 	}
 
+	public String toString() {
+		return this.name + " " + this.getLevel() + " : " + this.exp;
+	}
+	
 	/**
 	 * Returns the specified level's associated amount of experience from
 	 * {@code levelTable}
