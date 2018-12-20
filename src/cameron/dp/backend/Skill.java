@@ -170,6 +170,15 @@ public class Skill {
 	}
 
 	/**
+	 * Returns true if this skill is a Free-to-Play skill, otherwise returns false.
+	 * 
+	 * @return true if this skill is a Free-to-Play skill, otherwise returns false.
+	 */
+	public boolean isF2P() {
+		return this.isF2P;
+	}
+
+	/**
 	 * Set the amount of experience in this skill to the specified amount and return
 	 * the new amount of experience.
 	 * 
@@ -208,7 +217,7 @@ public class Skill {
 	public String toString() {
 		return this.name + " " + this.getLevel() + " : " + this.exp;
 	}
-	
+
 	/**
 	 * Returns the specified level's associated amount of experience from
 	 * {@code levelTable}
