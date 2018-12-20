@@ -23,8 +23,9 @@ public class Skill {
 			200000000 };// Levels are the indexes, offset by -1
 
 	// Variables
-	private String name;
+	private final String name;
 	private double exp;
+	private final boolean isF2P;
 
 	/**
 	 * Constructs a skill with the specified name and experience.
@@ -34,8 +35,9 @@ public class Skill {
 	 * @param exp
 	 *            - the amount of experience in the new skill
 	 */
-	public Skill(String name, double exp) {
+	public Skill(String name, boolean isF2P, double exp) {
 		this.name = name;
+		this.isF2P = isF2P;
 		setExp(exp);
 	}
 
@@ -45,8 +47,8 @@ public class Skill {
 	 * @param -
 	 *            the name of the new skill
 	 */
-	public Skill(String name) {
-		this(name, 0);
+	public Skill(String name, boolean isF2P) {
+		this(name, isF2P, 0);
 	}
 
 	/**

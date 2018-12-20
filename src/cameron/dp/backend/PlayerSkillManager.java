@@ -8,7 +8,9 @@ import java.util.ArrayList;
 /**
  * May need to review the design of this class. Its built to support a different
  * set of skills, but does not allow additional skills to be added. It also
- * requires the 23 skills I've added because they cannot be removed.
+ * requires the 23 skills I've added because they cannot be removed. I think the
+ * flexibility is fine, but this should focus on accomplishing what I want,
+ * which will require that I assume those 23 skills are always there
  * 
  * @author Cameron
  *
@@ -16,6 +18,10 @@ import java.util.ArrayList;
 public class PlayerSkillManager {
 	// Variables
 	private ArrayList<Skill> skills = new ArrayList<>();
+	private ArrayList<Skill> combatSkills = new ArrayList<>();
+	private ArrayList<Skill> supportSkills = new ArrayList<>();
+	private ArrayList<Skill> gatheringSkills = new ArrayList<>();
+	private ArrayList<Skill> artisanSkills = new ArrayList<>();
 
 	/**
 	 * Constructs a player skill manager with all skill levels set to 1 with 0
@@ -45,29 +51,29 @@ public class PlayerSkillManager {
 			double magic, double runecrafting, double hitpoints, double crafting, double mining, double smithing,
 			double fishing, double cooking, double firemaking, double woodcutting, double agility, double herblore,
 			double thieving, double fletching, double slayer, double farming, double construction, double hunter) {
-		skills.add(new Skill("Attack", attack));
-		skills.add(new Skill("Strength", strength));
-		skills.add(new Skill("Defence", defence));
-		skills.add(new Skill("Ranged", ranged));
-		skills.add(new Skill("Prayer", prayer));
-		skills.add(new Skill("Magic", magic));
-		skills.add(new Skill("Runecrafting", runecrafting));
-		skills.add(new Skill("Hitpoints", hitpoints));
-		skills.add(new Skill("Crafting", crafting));
-		skills.add(new Skill("Mining", mining));
-		skills.add(new Skill("Smithing", smithing));
-		skills.add(new Skill("Fishing", fishing));
-		skills.add(new Skill("Cooking", cooking));
-		skills.add(new Skill("Firemaking", firemaking));
-		skills.add(new Skill("Woodcutting", woodcutting));
-		skills.add(new Skill("Agility", agility));
-		skills.add(new Skill("Herblore", herblore));
-		skills.add(new Skill("Thieving", thieving));
-		skills.add(new Skill("Fletching", fletching));
-		skills.add(new Skill("Slayer", slayer));
-		skills.add(new Skill("Farming", farming));
-		skills.add(new Skill("Construction", construction));
-		skills.add(new Skill("Hunter", hunter));
+		this.addCombatSkill(new Skill("Attack", true, attack));
+		this.addCombatSkill(new Skill("Strength", true, strength));
+		this.addCombatSkill(new Skill("Defence", true, defence));
+		this.addCombatSkill(new Skill("Ranged", true, ranged));
+		this.addCombatSkill(new Skill("Prayer", true, prayer));
+		this.addCombatSkill(new Skill("Magic", true, magic));
+		this.addArtisanSkill(new Skill("Runecrafting", true, runecrafting));
+		this.addCombatSkill(new Skill("Hitpoints", true, hitpoints));
+		this.addArtisanSkill(new Skill("Crafting", true, crafting));
+		this.addGatheringSkill(new Skill("Mining", true, mining));
+		this.addArtisanSkill(new Skill("Smithing", true, smithing));
+		this.addGatheringSkill(new Skill("Fishing", true, fishing));
+		this.addArtisanSkill(new Skill("Cooking", true, cooking));
+		this.addArtisanSkill(new Skill("Firemaking", true, firemaking));
+		this.addGatheringSkill(new Skill("Woodcutting", true, woodcutting));
+		this.addSupportSkill(new Skill("Agility", false, agility));
+		this.addArtisanSkill(new Skill("Herblore", false, herblore));
+		this.addSupportSkill(new Skill("Thieving", false, thieving));
+		this.addArtisanSkill(new Skill("Fletching", false, fletching));
+		this.addSupportSkill(new Skill("Slayer", false, slayer));
+		this.addGatheringSkill(new Skill("Farming", false, farming));
+		this.addArtisanSkill(new Skill("Construction", false, construction));
+		this.addGatheringSkill(new Skill("Hunter", false, hunter));
 	}
 
 	/**
@@ -78,6 +84,12 @@ public class PlayerSkillManager {
 			double magic, double hitpoints) {
 		this(attack, strength, defence, ranged, prayer, magic, 0, hitpoints, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 				0);
+	}
+
+	public PlayerSkillManager(int attack, int strength, int defence, int ranged, int prayer, int magic, int hitpoints) {
+		this(Skill.levelToExp(attack), Skill.levelToExp(strength), Skill.levelToExp(defence), Skill.levelToExp(ranged),
+				Skill.levelToExp(prayer), Skill.levelToExp(magic), 0, Skill.levelToExp(hitpoints), 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0);
 	}
 
 	/**
@@ -205,9 +217,68 @@ public class PlayerSkillManager {
 		return names;
 	}
 
+	private void addSupportSkill(Skill skill) {
+		skills.add(skill);
+		supportSkills.add(skill);
+	}
+
+	private void addGatheringSkill(Skill skill) {
+		skills.add(skill);
+		gatheringSkills.add(skill);
+	}
+
+	private void addCombatSkill(Skill skill) {
+		skills.add(skill);
+		combatSkills.add(skill);
+	}
+
+	private void addArtisanSkill(Skill skill) {
+		skills.add(skill);
+		artisanSkills.add(skill);
+	}
+
+	public ArrayList<String> getSupportSkillNames() {
+		ArrayList<String> names = new ArrayList<>();
+		for (Skill skill : supportSkills) {
+			names.add(skill.getName());
+		}
+
+		return names;
+	}
+
+	public ArrayList<String> getGatheringSkillNames() {
+		ArrayList<String> names = new ArrayList<>();
+		for (Skill skill : gatheringSkills) {
+			names.add(skill.getName());
+		}
+
+		return names;
+	}
+
+	public ArrayList<String> getCombatSkillNames() {
+		ArrayList<String> names = new ArrayList<>();
+		for (Skill skill : combatSkills) {
+			names.add(skill.getName());
+		}
+
+		return names;
+	}
+
+	public ArrayList<String> getArtisanSkillNames() {
+		ArrayList<String> names = new ArrayList<>();
+		for (Skill skill : artisanSkills) {
+			names.add(skill.getName());
+		}
+
+		return names;
+	}
+
 	public static void main(String[] args) {
 		PlayerSkillManager tester = new PlayerSkillManager();
 
-		System.out.println(tester.getSkillString("Attack"));
+		System.out.println(tester.getSupportSkillNames());
+		System.out.println(tester.getGatheringSkillNames());
+		System.out.println(tester.getCombatSkillNames());
+		System.out.println(tester.getArtisanSkillNames());
 	}
 }
