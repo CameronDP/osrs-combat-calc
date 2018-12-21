@@ -21,6 +21,37 @@ public class CombatLevelCalc {
 		return (int) getGeneralCombatLevelUnrounded(skillManager);
 	}
 
+	/**
+	 * Returns a string representation of the combat type of the general combat
+	 * level. If multiple types are equal, then all applicable types will be listed
+	 * with a comma and space ({@code , } separating each type.
+	 * 
+	 * @param skillManager
+	 *            - the player skill manager whose general combat type to determine
+	 * @return a string representation of the combat type of the general combat
+	 *         level
+	 */
+	public static String getGeneralCombatLevelType(PlayerSkillManager skillManager) {
+		double lvl = getMelee(skillManager);
+		double compare = getRange(skillManager);
+		String type = "Melee";
+		if (lvl < compare) {
+			lvl = compare;
+			type = "Ranger";
+		} else if (lvl == compare) {
+			type += ", Ranger";
+		}
+
+		compare = getMage(skillManager);
+		if (lvl < compare) {
+			type = "Mage";
+		} else if (lvl == compare) {
+			type += ", Mage";
+		}
+
+		return type;
+	}
+
 	public static double getGeneralCombatLevelUnrounded(PlayerSkillManager skillManager) {
 		double lvl = getMelee(skillManager);
 		double compare = getRange(skillManager);
@@ -97,7 +128,7 @@ public class CombatLevelCalc {
 	public static void main(String[] args) {
 		// Variables
 		PlayerSkillManager skillManager = new PlayerSkillManager(30, 12, 25, 30, 23, 10, 28);
-		
+
 		System.out.println(skillManager.getSkillsString());
 		System.out.println("General: " + CombatLevelCalc.getGeneralCombatLevel(skillManager));
 		System.out.println("Melee:   " + CombatLevelCalc.getMeleeCombatLevel(skillManager));
