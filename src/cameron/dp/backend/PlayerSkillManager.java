@@ -6,6 +6,7 @@ package cameron.dp.backend;
 import java.util.ArrayList;
 
 /**
+ * W
  * May need to review the design of this class. Its built to support a different
  * set of skills, but does not allow additional skills to be added. It also
  * requires the 23 skills I've added because they cannot be removed. I think the
